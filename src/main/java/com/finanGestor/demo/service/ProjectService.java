@@ -11,37 +11,33 @@ import com.finanGestor.demo.model.repository.ProjectRepository;
 @Service
 public class ProjectService {
 
-    @Autowired
-    private ProjectRepository projectRepository;
+	@Autowired
+	private ProjectRepository projectRepository;
 
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
-    }
+	public Project createProject(Project project) {
+		return projectRepository.save(project);
+	}
 
-    public Project getProjectById(Long id) {
-        return projectRepository.findById(id).orElse(null);
-    }
+	public List<Project> getAllProjects() {
+		return projectRepository.findAll();
+	}
 
-    public Project createProject(Project project) {
-        return projectRepository.save(project);
-    }
+	public Project getProjectById(Long id) {
+		return projectRepository.findById(id).orElse(null);
+	}
 
-    public Project updateProject(Long id, Project project) {
-        Project existingProject = projectRepository.findById(id).orElse(null);
-        if (existingProject != null) {
-            existingProject.setName(project.getName());
-            existingProject.setBudget(project.getBudget());
-            existingProject.setCost(project.getCost());
-            existingProject.setCategory(project.getCategory());
-            existingProject.setServices(project.getServices());
-            return projectRepository.save(existingProject);
-        } else {
-            return null;
-        }
-    }
+	public Project updateProject(Long id, Project projectDetails) {
+		Project project = projectRepository.findById(id).orElse(null);
+		if (project != null) {
+			project.setName(projectDetails.getName());
+			project.setBudget(projectDetails.getBudget());
+			project.setCategory(projectDetails.getCategory());
+			return projectRepository.save(project);
+		}
+		return null;
+	}
 
-    public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
-    }
-    
+	public void deleteProject(Long id) {
+		projectRepository.deleteById(id);
+	}
 }

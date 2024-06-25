@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 @Table(name = "project")
 public class Project {
 
-	public Project(Long id, String name, double budget, double cost, ProjectCategory category, List<Service> services) {
+	public Project(Long id, String name, double budget, double cost, ProjectCategory category, List<ProjectServiceDetail> services) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -39,7 +39,7 @@ public class Project {
 	private ProjectCategory category;
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-	private List<Service> services;
+	private List<ProjectServiceDetail> services;
 
 	public Project() {
 		super();
@@ -86,11 +86,11 @@ public class Project {
 		this.category = category;
 	}
 
-	public List<Service> getServices() {
+	public List<ProjectServiceDetail> getServices() {
 		return services;
 	}
 
-	public void setServices(List<Service> services) {
+	public void setServices(List<ProjectServiceDetail> services) {
 		this.services = services;
 	}
 
