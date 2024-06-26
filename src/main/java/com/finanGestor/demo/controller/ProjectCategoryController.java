@@ -19,8 +19,7 @@ import com.finanGestor.demo.model.entity.ProjectCategory;
 import com.finanGestor.demo.service.ProjectCategoryService;
 
 @RestController
-@RequestMapping("/category")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:5500" }, maxAge = 3600)
+@RequestMapping("/categories")
 public class ProjectCategoryController {
 	
 	@Autowired

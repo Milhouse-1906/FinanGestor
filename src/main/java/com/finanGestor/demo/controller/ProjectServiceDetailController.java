@@ -21,7 +21,6 @@ import com.finanGestor.demo.service.ProjectServiceDetailService;
 
 @RestController
 @RequestMapping("/service")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:5500" }, maxAge = 3600)
 public class ProjectServiceDetailController {
 	@Autowired
 	private ProjectServiceDetailService projectServiceDetailService;
