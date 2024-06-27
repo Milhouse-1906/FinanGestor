@@ -3,7 +3,7 @@ package com.finanGestor.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +38,16 @@ public class ProjectController {
         return projectService.createProject(project);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/service/{projectId}")
+    public ResponseEntity<Project> addServiceToProject(@PathVariable Long projectId, @RequestBody Project updatedProject) {
+        Project savedProject = projectService.addServiceToProject(projectId, updatedProject);
+        if (savedProject == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(savedProject);
+    }
+    
+    @PutMapping("/update/{id}")
     public Project updateProject(@PathVariable Long id, @RequestBody Project project) {
         return projectService.updateProject(id, project);
     }

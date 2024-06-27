@@ -15,6 +15,7 @@ public class ProjectServiceDetail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	private double cost;
 	private String description;
 
 	@ManyToOne
@@ -23,11 +24,12 @@ public class ProjectServiceDetail {
 	public ProjectServiceDetail() {
 	}
 
-	public ProjectServiceDetail(Long id, String name, String description, Project project) {
+	public ProjectServiceDetail(Long id, Double cost, String name, String description, Project project) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.project = project;
+		this.cost = cost;
 	}
 
 	public Long getId() {
@@ -60,5 +62,13 @@ public class ProjectServiceDetail {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
 	}
 }

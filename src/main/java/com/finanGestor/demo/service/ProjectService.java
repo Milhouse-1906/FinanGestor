@@ -40,4 +40,15 @@ public class ProjectService {
 	public void deleteProject(Long id) {
 		projectRepository.deleteById(id);
 	}
+
+	public Project addServiceToProject(Long projectId, Project updatedProject) {
+        Project existingProject = projectRepository.findById(projectId).orElse(null);
+        if (existingProject != null) {
+            existingProject.setServices(updatedProject.getServices());
+           
+            return projectRepository.save(existingProject);
+        }
+
+        return null;
+    }
 }
