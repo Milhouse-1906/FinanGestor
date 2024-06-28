@@ -63,6 +63,6 @@ public class ProjectServiceDetailController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteServiceDetail(@PathVariable Long id) {
 		projectServiceDetailService.deleteProjectServiceDetail(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		 return ResponseEntity.noContent().build();
 	}
 }

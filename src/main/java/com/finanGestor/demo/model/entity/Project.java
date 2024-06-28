@@ -2,6 +2,8 @@ package com.finanGestor.demo.model.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +41,7 @@ public class Project {
 	private ProjectCategory category;
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<ProjectServiceDetail> services;
 
 	public Project() {
