@@ -3,6 +3,7 @@ package com.finanGestor.demo.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,8 +22,8 @@ public class ProjectServiceDetail {
     private double cost;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
     @JsonBackReference
     private Project project;
 

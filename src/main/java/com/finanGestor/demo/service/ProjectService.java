@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.finanGestor.demo.model.entity.Project;
+import com.finanGestor.demo.model.entity.ProjectServiceDetail;
 import com.finanGestor.demo.model.repository.ProjectRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProjectService {
@@ -43,12 +46,28 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-    public Project addServiceToProject(Long projectId, Project updatedProject) {
-        Project existingProject = projectRepository.findById(projectId).orElse(null);
-        if (existingProject != null) {
-            updatedProject.getServices().forEach(service -> service.setProject(existingProject));
-            existingProject.setServices(updatedProject.getServices());
-            return projectRepository.save(existingProject);
+    @Transactional
+    public Project removeServiceFromProject(Long projectId, Long serviceId) {
+        Project project = projectRepository.findById(projectId).orElse(null);
+        if (project != null) {
+            ProjectServiceDetail serviceToRemove = project.getServices().stream()
+                .filter(service -> service.getId().equals(serviceId))
+                .findFirst()
+                .orElse(null);
+            if (serviceToRemove != null) {
+                project.removeService(serviceToRemove);
+                return projectRepository.save(project);
+            }
+        }
+        return null;
+    }
+
+    @Transactional
+    public Project addServiceToProject(Long projectId, ProjectServiceDetail newService) {
+        Project project = projectRepository.findById(projectId).orElse(null);
+        if (project != null) {
+            project.addService(newService);
+            return projectRepository.save(project);
         }
         return null;
     }
