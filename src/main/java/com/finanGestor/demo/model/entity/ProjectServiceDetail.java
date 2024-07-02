@@ -27,54 +27,54 @@ public class ProjectServiceDetail {
     @JsonBackReference
     private Project project;
 
-    public ProjectServiceDetail() {
-    }
+    public ProjectServiceDetail() {}
 
-    public ProjectServiceDetail(Long id, Double cost, String name, String description, Project project) {
+    public ProjectServiceDetail(Long id, String name, double cost, String description, Project project) {
         this.id = id;
         this.name = name;
+        this.cost = cost;
         this.description = description;
         this.project = project;
-        this.cost = cost;
     }
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public double getCost() {
+		return cost;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
 
-    public Project getProject() {
-        return project;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setProject(Project project) {
-        this.project = project;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public double getCost() {
-        return cost;
-    }
+	public Project getProject() {
+		return project;
+	}
 
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
 }

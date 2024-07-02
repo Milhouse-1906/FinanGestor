@@ -40,14 +40,14 @@ public class ProjectController {
 		return projectService.createProject(project);
 	}
 
-	@PutMapping("/service/{projectId}")
-	public ResponseEntity<Project> addServiceToProject(@PathVariable Long projectId,
-			@RequestBody ProjectServiceDetail serviceDetail) {
-		Project savedProject = projectService.addServiceToProject(projectId, serviceDetail);
-		if (savedProject == null) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(savedProject);
+	@PostMapping("/{projectId}/services")
+	public Project addServiceToProject(@PathVariable Long projectId, @RequestBody ProjectServiceDetail serviceDetail) {
+		return projectService.addServiceToProject(projectId, serviceDetail);
+	}
+
+	@DeleteMapping("/{projectId}/services/{serviceId}")
+	public Project removeServiceFromProject(@PathVariable Long projectId, @PathVariable Long serviceId) {
+		return projectService.removeServiceFromProject(projectId, serviceId);
 	}
 
 	@PutMapping("/update/{id}")
@@ -57,18 +57,6 @@ public class ProjectController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(updatedProject);
-	}
-
-	@DeleteMapping("/{projectId}/services/{serviceId}")
-	public ResponseEntity<Project> removeServiceFromProject(@PathVariable Long projectId,
-	        @PathVariable Long serviceId) {
-	    System.out.println("Removendo serviço do projeto: projectId=" + projectId + ", serviceId=" + serviceId);
-	    Project updatedProject = projectService.removeServiceFromProject(projectId, serviceId);
-	    if (updatedProject != null) {
-	        return new ResponseEntity<>(updatedProject, HttpStatus.OK);
-	    } else {
-	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	    }
 	}
 
 	@DeleteMapping("/{id}")

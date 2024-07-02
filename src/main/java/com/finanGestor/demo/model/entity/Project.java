@@ -19,13 +19,13 @@ import jakarta.persistence.Table;
 @Table(name = "project")
 public class Project {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    private double budget;
     private double cost;
+    private double budget;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -35,87 +35,72 @@ public class Project {
     @JsonManagedReference
     private List<ProjectServiceDetail> services = new ArrayList<>();
 
-    public Project() {
-    }
+    public Project() {}
 
-    public Project(Long id, String name, double budget, ProjectCategory category, List<ProjectServiceDetail> services) {
+    public Project(Long id, String name, double budget, double cost, ProjectCategory category, String description, List<ProjectServiceDetail> services) {
         this.id = id;
         this.name = name;
-        this.budget = budget;
-        this.category = category;
-        if (services != null) {
-            this.services = services;
-        } else {
-            this.services = new ArrayList<>();
-        }
-        updateCost();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getBudget() {
-        return budget;
-    }
-
-    public void setBudget(double budget) {
-        this.budget = budget;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
         this.cost = cost;
-    }
-
-    public ProjectCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(ProjectCategory category) {
+        this.budget = budget;
         this.category = category;
+        this.description = description;
+        this.services = services;
     }
 
-    public List<ProjectServiceDetail> getServices() {
-        return services;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setServices(List<ProjectServiceDetail> services) {
-        this.services = services != null ? services : new ArrayList<>();
-        updateCost();
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void addService(ProjectServiceDetail service) {
-        if (service != null) {
-            this.services.add(service);
-            service.setProject(this);
-            this.cost += service.getCost();
-        }
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void removeService(ProjectServiceDetail service) {
-        if (service != null && this.services.remove(service)) {
-            service.setProject(null);
-            this.cost -= service.getCost();
-        }
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    private void updateCost() {
-        this.cost = this.services.stream().mapToDouble(ProjectServiceDetail::getCost).sum();
-    }
+	public double getBudget() {
+		return budget;
+	}
+
+	public void setBudget(double budget) {
+		this.budget = budget;
+	}
+
+	public ProjectCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ProjectCategory category) {
+		this.category = category;
+	}
+
+	public List<ProjectServiceDetail> getServices() {
+		return services;
+	}
+
+	public void setServices(List<ProjectServiceDetail> services) {
+		this.services = services;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+    
 }

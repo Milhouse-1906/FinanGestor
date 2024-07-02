@@ -1,6 +1,7 @@
 package com.finanGestor.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.finanGestor.demo.model.entity.Project;
 import com.finanGestor.demo.model.entity.ProjectServiceDetail;
 import com.finanGestor.demo.model.repository.ProjectRepository;
+import com.finanGestor.demo.model.repository.ProjectServiceDetailRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -16,6 +18,9 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+    
+    @Autowired
+    private ProjectServiceDetailRepository projectServiceDetailRepository;
 
     public Project createProject(Project project) {
         return projectRepository.save(project);
@@ -35,7 +40,6 @@ public class ProjectService {
             project.setName(projectDetails.getName());
             project.setBudget(projectDetails.getBudget());
             project.setCategory(projectDetails.getCategory());
-            project.setCost(projectDetails.getCost());
             project.setServices(projectDetails.getServices());
             return projectRepository.save(project);
         }
@@ -47,28 +51,34 @@ public class ProjectService {
     }
 
     @Transactional
-    public Project removeServiceFromProject(Long projectId, Long serviceId) {
-        Project project = projectRepository.findById(projectId).orElse(null);
-        if (project != null) {
-            ProjectServiceDetail serviceToRemove = project.getServices().stream()
-                .filter(service -> service.getId().equals(serviceId))
-                .findFirst()
-                .orElse(null);
-            if (serviceToRemove != null) {
-                project.removeService(serviceToRemove);
-                return projectRepository.save(project);
-            }
+    public Project addServiceToProject(Long projectId, ProjectServiceDetail serviceDetail) {
+        Optional<Project> projectOptional = projectRepository.findById(projectId);
+        if (projectOptional.isPresent()) {
+            Project project = projectOptional.get();
+            project.getServices().add(serviceDetail);
+            serviceDetail.setProject(project);
+            projectServiceDetailRepository.save(serviceDetail);
+            projectRepository.save(project);
+            return project;
         }
-        return null;
+        throw new RuntimeException("Project not found with id " + projectId);
     }
 
     @Transactional
-    public Project addServiceToProject(Long projectId, ProjectServiceDetail newService) {
-        Project project = projectRepository.findById(projectId).orElse(null);
-        if (project != null) {
-            project.addService(newService);
-            return projectRepository.save(project);
+    public Project removeServiceFromProject(Long projectId, Long serviceId) {
+        Optional<Project> projectOptional = projectRepository.findById(projectId);
+        if (projectOptional.isPresent()) {
+            Project project = projectOptional.get();
+            ProjectServiceDetail serviceDetail = project.getServices().stream()
+                    .filter(service -> service.getId().equals(serviceId))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Service not found with id " + serviceId));
+            project.getServices().remove(serviceDetail);
+            serviceDetail.setProject(null);
+            projectServiceDetailRepository.delete(serviceDetail);
+            projectRepository.save(project);
+            return project;
         }
-        return null;
+        throw new RuntimeException("Project not found with id " + projectId);
     }
 }
