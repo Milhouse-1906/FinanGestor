@@ -20,32 +20,34 @@ import jakarta.persistence.Table;
 public class Project {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private double cost;
-    private double budget;
-    private String description;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+	private double cost;
+	private double budget;
+	private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private ProjectCategory category;
+	@ManyToOne
+	@JoinColumn(name = "category_id", nullable = false)
+	private ProjectCategory category;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<ProjectServiceDetail> services = new ArrayList<>();
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<ProjectServiceDetail> services = new ArrayList<>();
 
-    public Project() {}
+	public Project() {
+	}
 
-    public Project(Long id, String name, double budget, double cost, ProjectCategory category, String description, List<ProjectServiceDetail> services) {
-        this.id = id;
-        this.name = name;
-        this.cost = cost;
-        this.budget = budget;
-        this.category = category;
-        this.description = description;
-        this.services = services;
-    }
+	public Project(Long id, String name, double budget, double cost, ProjectCategory category, String description,
+			List<ProjectServiceDetail> services) {
+		this.id = id;
+		this.name = name;
+		this.cost = cost;
+		this.budget = budget;
+		this.category = category;
+		this.description = description;
+		this.services = services;
+	}
 
 	public Long getId() {
 		return id;
@@ -102,5 +104,5 @@ public class Project {
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
-    
+
 }

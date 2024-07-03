@@ -26,12 +26,22 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    private double calcularTudo(Project project) {
+    	double custoTotal = 0;
+    	for (ProjectServiceDetail service : project.getServices()) {
+            custoTotal += service.getCost();
+        };
+		return custoTotal;
+	}
+    
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
     public Project getProjectById(Long id) {
-        return projectRepository.findById(id).orElse(null);
+    	Project projeto = projectRepository.findById(id).orElse(null);
+    	projeto.setCost(calcularTudo(projeto));
+        return projeto;
     }
 
     public Project updateProject(Long id, Project projectDetails) {
